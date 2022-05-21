@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:vm="clr-namespace:JCTaxCalculatorApp.ViewModels"
+             Title="{Binding Title}"
+             x:DataType="vm:OrderViewModel"
+             x:Class="JCTaxCalculatorApp.Views.OrderPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <!-- 
+            
+            -->
+            <Label Text="Sales Tax Rate"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding TaxRate}"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
