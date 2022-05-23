@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+                    x:Class="SpectrumTest.Styles.DefaultTheme">
+
+    <Color x:Key="LightPageBackgroundColor">#CFD8DC</Color>
+    <Color x:Key="DarkPageBackgroundColor">#545454</Color>
+
+    <Color x:Key="LightBackground">#FAF9F8</Color>
+    <Color x:Key="DarkBackground">Black</Color>
+    
+    <Color x:Key="LabelText">#1F1F1F</Color>
+    <Color x:Key="LabelTextDark">White</Color>
+    
+    <Color x:Key="LightPrimaryButtonBackgroundColor">#9CBC5C</Color>
+    <Color x:Key="LightPrimaryButtonTextColor">White</Color>
+    <Color x:Key="DarkPrimaryButtonBackgroundColor">#9CBC5C</Color>
+    <Color x:Key="DarkPrimaryButtonTextColor">#171717</Color>
+
+    <Color x:Key="LightDisabledButtonBackgroundColor">LightGray</Color>
+    <Color x:Key="LightDisabledButtonTextColor">Black</Color>
+    <Color x:Key="DarkDisabledButtonBackgroundColor">DarkSlateGray</Color>
+    <Color x:Key="DarkDisabledButtonTextColor">White</Color>
+    
+    <Style TargetType="ContentPage">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource LabelText}, Dark={StaticResource LabelTextDark}}" />
+    </Style>
+    
+    <Thickness x:Key="DataEntryMargin">40,0,40,10</Thickness>
+
+    <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+        <Setter Property="TextColor" Value="Red" />
+        <Setter Property="FontAttributes" Value="Italic" />
+    </Style>
+
+    <Style x:Key="InvalidEntryMessageStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="Red" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Margin" Value="40,-10,40,0" />
+    </Style>
+
+    <Style x:Key="PrimaryButton"
+           TargetType="Button">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonBackgroundColor}, Dark={StaticResource DarkPrimaryButtonBackgroundColor}}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonTextColor}, Dark={StaticResource DarkPrimaryButtonTextColor}}" />
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+
+    <Style x:Key="DisabledButton"
+           TargetType="Button">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource LightDisabledButtonBackgroundColor}, Dark={StaticResource DarkDisabledButtonBackgroundColor}}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource LightDisabledButtonTextColor}, Dark={StaticResource DarkDisabledButtonTextColor}}" />
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+
+</ResourceDictionary>

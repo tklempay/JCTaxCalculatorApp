@@ -1,6 +1,10 @@
 ﻿using JC.Common.Interfaces;
 using JC.Common.Models;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace JCTaxCalculatorApp.ViewModels
 {
@@ -17,6 +21,14 @@ namespace JCTaxCalculatorApp.ViewModels
                 // OnPropertyChanged(nameof(TotalTax));
             }
         }
+        private event EventHandler CalculateTotalTax = delegate { };
+
+        private decimal _totalTax;
+        public decimal TotalTax
+        {
+            get => _totalTax;
+            set => SetProperty(ref _totalTax, value);
+        }
 
         private string _zipCode;
         public string ZipCode
@@ -25,24 +37,42 @@ namespace JCTaxCalculatorApp.ViewModels
             set => SetProperty(ref _zipCode, value);
         }
 
-        ITaxService _taxService;
+        private Order _order;
+        public Order Order 
+        { 
+            get => _order;
+            set
+            {
+                SetProperty(ref _order, value);
+                ZipCode = _order.Customer.MailingAddress.ZipCode;
+            }
+        }
 
-        private event EventHandler InitializeVM = delegate { };
+        private ITaxService _taxService;
 
         public OrderViewModel(ITaxService taxService)
         {
             _taxService = taxService;
-
-            InitializeVM += Initialize;
-            // raise event
-            InitializeVM(this, EventArgs.Empty);
+            Order = App.Current.Order;
+            CalculateTotalTax += GetTotalTaxAsync;
+            // raise the event
+            CalculateTotalTax(this, EventArgs.Empty);
         }
 
-        private async void Initialize(object sender, EventArgs e)
+        private async void GetTotalTaxAsync(object sender, EventArgs e)
         {
-            InitializeVM -= Initialize;
-            decimal taxRate = await _taxService.GetTaxRateAsync(new Location { ZipCode = "12345" });
-            TaxRate = taxRate.ToString();
+            CalculateTotalTax -= GetTotalTaxAsync;
+            try
+            {
+                TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
+            }
+            catch(Exception ex)
+            {
+                TotalTax = 0;
+                await Application.Current.MainPage.DisplayAlert("Order Page",
+                                                                $"Error occurred while calculating the total tax on your order: {ex.Message}",
+                                                                "OK");
+            }
         }
     }
 }

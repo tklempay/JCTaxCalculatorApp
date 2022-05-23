@@ -73,9 +73,10 @@ namespace JC.Common.Services
             return taxRate;
         }
 
-        public Task<decimal> CalculateTaxesAsync()
+        public async Task<decimal> CalculateTaxesAsync(Order order)
         {
-            throw new System.NotImplementedException();
+            var taxRate = await GetTaxRateAsync(order.Customer.MailingAddress);
+            return Math.Round(order.OrderTotal * taxRate, 2);
         }
     }
 }

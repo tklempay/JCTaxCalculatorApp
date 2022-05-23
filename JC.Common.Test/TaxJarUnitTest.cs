@@ -12,6 +12,10 @@ namespace JC.Common.Tests
     [TestClass]
     public class TaxJarUnitTest
     {
+        private Item Item { get; }
+
+        private Customer Customer { get; set; }
+
         private IServiceProvider ServiceProvider { get; }
         public TaxJarUnitTest()
         {
@@ -19,6 +23,31 @@ namespace JC.Common.Tests
             services.AddSingleton<ITaxCalculator, TaxJarTaxCalculator>();
             services.AddSingleton<ITaxService, TaxService>();
             ServiceProvider = services.BuildServiceProvider();
+
+            Item = new()
+            {
+                ItemName = "Widget",
+                Description = "Best Widgets In The World!",
+                Price = 10.00M,
+                Quantity = 1,
+            };
+
+            Location address = new()
+            {
+                ZipCode = "13413",
+                City = "New Hartford",
+                State = "NY",
+                Country = "US",
+                StreetAddress = "1 Tennyson Circle"
+            };
+
+            Customer = new()
+            {
+                Name = "TomK",
+                BillingAddress = address,
+                HomeAddress = address,
+                MailingAddress = address,
+            };
         }
 
         [TestMethod]
@@ -62,6 +91,31 @@ namespace JC.Common.Tests
         {
             List<string> zipCodes = new List<string> { "", null, "0123", "1" };
             // todo: finish this test
+        }
+
+        [TestMethod]
+        public async Task CalculateTaxSingleItem()
+        {
+            Order order = new()
+            {
+                Customer = Customer,
+                Items = new List<Item> { Item },
+            };
+            ITaxService taxService = ServiceProvider.GetService<ITaxService>();
+            decimal taxTotal = 0;
+            try
+            {
+                taxTotal = await taxService.CalculateTaxesAsync(order);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Assert.IsNotNull(taxTotal);
+            var singleItemNewHartfordTaxRate = Math.Round(Item.Price * .0875M, 2);
+            Assert.AreEqual(singleItemNewHartfordTaxRate, taxTotal);
+            Console.WriteLine($"TaxTotal: {taxTotal}");
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace JC.Common.Services
 
         public async Task<decimal> CalculateTaxesAsync(Order order)
         {
-            var totalTaxes = await _taxCalculator.CalculateTaxesAsync();
+            var totalTaxes = await _taxCalculator.CalculateTaxesAsync(order);
             return totalTaxes;
         }
     }

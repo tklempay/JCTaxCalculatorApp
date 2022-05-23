@@ -2,6 +2,7 @@
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using JCTaxCalculatorApp.ViewModels;
+using JC.Common.Models;
 
 namespace JCTaxCalculatorApp.Views
 {
@@ -11,7 +12,7 @@ namespace JCTaxCalculatorApp.Views
         public OrderPage()
         {
             InitializeComponent();
-            BindingContext = App.Current.ServiceProvider.GetService<OrderViewModel>();
+            BindingContext = App.Current.ServiceProvider.GetService<OrderViewModel>(); 
 
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }

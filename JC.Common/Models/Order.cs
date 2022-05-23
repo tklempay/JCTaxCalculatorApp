@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JC.Common.Models
 {
@@ -11,5 +8,7 @@ namespace JC.Common.Models
         public Customer Customer { get; set; }
 
         public List<Item> Items { get; set; }
+
+        public decimal OrderTotal => Enumerable.Sum(Items.Select(x => x.Price * x.Quantity));
     }
 }
