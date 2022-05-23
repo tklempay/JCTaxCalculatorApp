@@ -21,11 +21,11 @@
     <Color x:Key="DarkPrimaryButtonBackgroundColor">#9CBC5C</Color>
     <Color x:Key="DarkPrimaryButtonTextColor">#171717</Color>
 
-    <Color x:Key="LightDisabledButtonBackgroundColor">LightGray</Color>
-    <Color x:Key="LightDisabledButtonTextColor">Black</Color>
-    <Color x:Key="DarkDisabledButtonBackgroundColor">DarkSlateGray</Color>
-    <Color x:Key="DarkDisabledButtonTextColor">White</Color>
-    
+    <Color x:Key="LightSecondaryButtonBackgroundColor">#9CBC5C</Color>
+    <Color x:Key="LightSecondaryButtonTextColor">White</Color>
+    <Color x:Key="DarkSecondaryButtonBackgroundColor">#9CBC5C</Color>
+    <Color x:Key="DarkSecondaryButtonTextColor">#171717</Color>
+
     <Style TargetType="ContentPage">
         <Setter Property="BackgroundColor"
                 Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}" />
@@ -58,6 +58,15 @@
                 Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonBackgroundColor}, Dark={StaticResource DarkPrimaryButtonBackgroundColor}}" />
         <Setter Property="TextColor"
                 Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonTextColor}, Dark={StaticResource DarkPrimaryButtonTextColor}}" />
+        <Setter Property="CornerRadius" Value="20"/>
+    </Style>
+
+    <Style x:Key="SecondaryButton"
+           TargetType="Button">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource LightSecondaryButtonBackgroundColor}, Dark={StaticResource DarkSecondaryButtonBackgroundColor}}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource LightSecondaryButtonTextColor}, Dark={StaticResource DarkSecondaryButtonTextColor}}" />
         <Setter Property="CornerRadius" Value="20"/>
     </Style>
 

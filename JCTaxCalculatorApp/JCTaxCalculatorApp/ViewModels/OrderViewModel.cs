@@ -11,8 +11,8 @@ namespace JCTaxCalculatorApp.ViewModels
 {
     public class OrderViewModel : BaseViewModel
     {
-        private string _taxRate;
-        public string TaxRate
+        private decimal _taxRate;
+        public decimal TaxRate
         {
             get => _taxRate;
             set
@@ -81,6 +81,7 @@ namespace JCTaxCalculatorApp.ViewModels
             InitializeVM -= Initialize;
             try
             {
+                TaxRate = await _taxService.GetTaxRateAsync(Order.Customer.MailingAddress);
                 TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
             }
             catch(Exception ex)
