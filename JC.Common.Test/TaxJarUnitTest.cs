@@ -91,7 +91,22 @@ namespace JC.Common.Tests
         public async Task GetTaxRateBadZipCode()
         {
             List<string> zipCodes = new List<string> { "", null, "0123", "1" };
-            // todo: finish this test
+            Location location = new Location();
+            ITaxService taxService = ServiceProvider.GetService<ITaxService>();
+            decimal taxRate = -1;
+            foreach (var zipcode in zipCodes)
+            {
+                try
+                {
+                    location.ZipCode = zipcode;
+                    taxRate = await taxService.GetTaxRateAsync(location);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                Assert.AreEqual(-1, taxRate);
+            }
         }
 
         [TestMethod]
