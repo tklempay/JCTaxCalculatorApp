@@ -10,14 +10,15 @@
     <ContentPage.Content>
         <StackLayout Margin="20"
                      Spacing="20">
-            <Button Text="Place your order"
-                    Style="{x:StaticResource PrimaryButton}"/>
+            <Label Text="Order Page"
+                   FontSize="30"
+                   HorizontalOptions="Center" />
             <BoxView HeightRequest="1"
                      HorizontalOptions="FillAndExpand" />
             <Label Text="Order Summary"
                    FontSize="Body"
                    FontAttributes="Bold"/>
-            <CollectionView ItemsSource="{Binding Order.Items}"
+            <CollectionView ItemsSource="{Binding OrderItems}"
                             HeightRequest="80"
                             Footer="">
                 <CollectionView.ItemTemplate>
@@ -83,6 +84,9 @@
                        Grid.Column="1"
                        HorizontalTextAlignment="End" />
             </Grid>
+            <Button Text="Place your order"
+                    Style="{x:StaticResource PrimaryButton}"
+                    Command="{Binding PlaceOrderCommand} "/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

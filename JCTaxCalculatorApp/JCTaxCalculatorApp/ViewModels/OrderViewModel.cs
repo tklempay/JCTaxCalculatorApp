@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 
 namespace JCTaxCalculatorApp.ViewModels
@@ -21,7 +22,6 @@ namespace JCTaxCalculatorApp.ViewModels
                 // OnPropertyChanged(nameof(TotalTax));
             }
         }
-        private event EventHandler CalculateOrder = delegate { };
 
         private decimal _totalTax;
         public decimal TotalTax
@@ -55,20 +55,30 @@ namespace JCTaxCalculatorApp.ViewModels
             }
         }
 
+        private IEnumerable<Item> _orderItems;
+        public IEnumerable<Item> OrderItems
+        {
+            get => _orderItems;
+            set => SetProperty(ref _orderItems, value);
+        }
+
         private ITaxService _taxService;
+
+        private event EventHandler InitializeVM = delegate { };
 
         public OrderViewModel(ITaxService taxService)
         {
             _taxService = taxService;
             Order = App.Current.Order;
-            CalculateOrder += GetTotalsAsync;
+            InitializeVM += Initialize;
             // raise the event
-            CalculateOrder(this, EventArgs.Empty);
+            InitializeVM(this, EventArgs.Empty);
         }
 
-        private async void GetTotalsAsync(object sender, EventArgs e)
+        // poor man's life cycle event for view model loading - done for async
+        private async void Initialize(object sender, EventArgs e)
         {
-            CalculateOrder -= GetTotalsAsync;
+            InitializeVM -= Initialize;
             try
             {
                 TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
@@ -82,8 +92,16 @@ namespace JCTaxCalculatorApp.ViewModels
             }
             finally
             {
+                OrderItems = Order.Items;
                 OrderTotal = Order.OrderTotal + TotalTax;
             }
         }
+
+        public IAsyncCommand PlaceOrderCommand => new AsyncCommand(async () =>
+        {
+            await Application.Current.MainPage.DisplayAlert("JCTest - TomK",
+                                                            "Thank you for placing your order!",
+                                                            "OK");
+        });
     }
 }
