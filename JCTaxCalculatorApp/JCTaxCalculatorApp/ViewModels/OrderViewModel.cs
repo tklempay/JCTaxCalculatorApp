@@ -79,23 +79,10 @@ namespace JCTaxCalculatorApp.ViewModels
         private async void Initialize(object sender, EventArgs e)
         {
             InitializeVM -= Initialize;
-            try
-            {
-                TaxRate = await _taxService.GetTaxRateAsync(Order.Customer.MailingAddress);
-                TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
-            }
-            catch(Exception ex)
-            {
-                TotalTax = 0;
-                await Application.Current.MainPage.DisplayAlert("Order Page",
-                                                                $"Error occurred while calculating the total tax on your order: {ex.Message}",
-                                                                "OK");
-            }
-            finally
-            {
-                OrderItems = Order.Items;
-                OrderTotal = Order.OrderTotal + TotalTax;
-            }
+
+            await SetTaxes().ConfigureAwait(false);
+            OrderItems = Order.Items;
+            OrderTotal = Order.OrderTotal + TotalTax;
         }
 
         public IAsyncCommand PlaceOrderCommand => new AsyncCommand(async () =>
@@ -104,5 +91,35 @@ namespace JCTaxCalculatorApp.ViewModels
                                                             "Thank you for placing your order!",
                                                             "OK");
         });
+
+        public IAsyncCommand UpdateZipcodeCommand => new AsyncCommand(async () =>
+        {
+            Order.Customer.MailingAddress.ZipCode = ZipCode;
+            // real world example would prompt for full address, not just zipcode.  for now, just clear it out
+            Order.Customer.MailingAddress.City = String.Empty;
+            Order.Customer.MailingAddress.StreetAddress = String.Empty;
+            await SetTaxes().ConfigureAwait(false);
+            OrderTotal = Order.OrderTotal + TotalTax;
+        });
+
+        /// <summary>
+        /// SetTaxes - private method to query the tax service for the tax rate and update the tax totals
+        /// </summary>
+        /// <returns></returns>
+        private async Task SetTaxes()
+        {
+            try
+            {
+                TaxRate = await _taxService.GetTaxRateAsync(Order.Customer.MailingAddress);
+                TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                TotalTax = 0;
+                await Application.Current.MainPage.DisplayAlert("Order Page",
+                                                                $"Error occurred while calculating the total tax on your order: {ex.Message}",
+                                                                "OK");
+            }
+        }
     }
 }

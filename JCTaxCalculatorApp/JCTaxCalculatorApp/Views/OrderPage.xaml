@@ -8,8 +8,9 @@
              x:DataType="vm:OrderViewModel"
              x:Class="JCTaxCalculatorApp.Views.OrderPage">
     <ContentPage.Content>
-        <StackLayout Margin="20"
-                     Spacing="20">
+        <StackLayout Margin="20">
+            <StackLayout VerticalOptions="Start" 
+                         Spacing="20">
             <Label Text="Order Page"
                    FontSize="30"
                    HorizontalOptions="Center" />
@@ -87,8 +88,9 @@
             <Button Text="Place your order"
                     Style="{x:StaticResource PrimaryButton}"
                     Command="{Binding PlaceOrderCommand} "/>
-            <StackLayout VerticalOptions="End"
-                         Margin="0,200,0,0">
+            </StackLayout>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Margin="0,0,0,20">
                 <Label Text="Shipping info"
                        FontSize="16"
                        FontAttributes="Bold"/>
@@ -96,6 +98,7 @@
                     <Entry Text="{Binding ZipCode}"
                            Placeholder="Zipcode"
                            Keyboard="Numeric"
+                           ReturnCommand="{Binding UpdateZipcodeCommand}"
                            ClearButtonVisibility="WhileEditing"
                            VerticalTextAlignment="Center"
                            Grid.Column="0" />
@@ -105,7 +108,8 @@
                            VerticalTextAlignment="Center" />
                     <Button Text="Update"
                             Grid.Column="2"
-                            Style="{x:StaticResource SecondaryButton}"/>
+                            Style="{x:StaticResource SecondaryButton}"
+                            Command="{Binding UpdateZipcodeCommand}" />
                 </Grid>
             </StackLayout>
         </StackLayout>
