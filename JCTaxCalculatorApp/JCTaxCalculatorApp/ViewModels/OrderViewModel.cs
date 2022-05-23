@@ -21,13 +21,20 @@ namespace JCTaxCalculatorApp.ViewModels
                 // OnPropertyChanged(nameof(TotalTax));
             }
         }
-        private event EventHandler CalculateTotalTax = delegate { };
+        private event EventHandler CalculateOrder = delegate { };
 
         private decimal _totalTax;
         public decimal TotalTax
         {
             get => _totalTax;
             set => SetProperty(ref _totalTax, value);
+        }
+
+        private decimal _orderTotal;
+        public decimal OrderTotal
+        {
+            get => _orderTotal;
+            set => SetProperty(ref _orderTotal, value);
         }
 
         private string _zipCode;
@@ -54,14 +61,14 @@ namespace JCTaxCalculatorApp.ViewModels
         {
             _taxService = taxService;
             Order = App.Current.Order;
-            CalculateTotalTax += GetTotalTaxAsync;
+            CalculateOrder += GetTotalsAsync;
             // raise the event
-            CalculateTotalTax(this, EventArgs.Empty);
+            CalculateOrder(this, EventArgs.Empty);
         }
 
-        private async void GetTotalTaxAsync(object sender, EventArgs e)
+        private async void GetTotalsAsync(object sender, EventArgs e)
         {
-            CalculateTotalTax -= GetTotalTaxAsync;
+            CalculateOrder -= GetTotalsAsync;
             try
             {
                 TotalTax = await _taxService.CalculateTaxesAsync(Order).ConfigureAwait(false);
@@ -72,6 +79,10 @@ namespace JCTaxCalculatorApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Order Page",
                                                                 $"Error occurred while calculating the total tax on your order: {ex.Message}",
                                                                 "OK");
+            }
+            finally
+            {
+                OrderTotal = Order.OrderTotal + TotalTax;
             }
         }
     }

@@ -9,17 +9,16 @@
              x:Class="JCTaxCalculatorApp.Views.OrderPage">
     <ContentPage.Content>
         <StackLayout Margin="20"
-                     Spacing="20"
-                     BackgroundColor="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}">
+                     Spacing="20">
             <Button Text="Place your order"
                     Style="{x:StaticResource PrimaryButton}"/>
             <BoxView HeightRequest="1"
-                     BackgroundColor="Gray"
                      HorizontalOptions="FillAndExpand" />
             <Label Text="Order Summary"
                    FontSize="Body"
                    FontAttributes="Bold"/>
             <CollectionView ItemsSource="{Binding Order.Items}"
+                            HeightRequest="80"
                             Footer="">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Item">
@@ -55,7 +54,6 @@
                 </CollectionView.Header>
             </CollectionView>
             <BoxView HeightRequest="1"
-                     BackgroundColor="Gray"
                      HorizontalOptions="FillAndExpand" />
             <Grid ColumnDefinitions="8*,2*">
                 <Label Text="Total before tax:"
@@ -74,8 +72,17 @@
                        HorizontalTextAlignment="End" />
             </Grid>
             <BoxView HeightRequest="1"
-                     BackgroundColor="Gray"
                      HorizontalOptions="FillAndExpand" />
+            <Grid ColumnDefinitions="8*,2*">
+                <Label Text="Order total:"
+                       TextColor="IndianRed"
+                       Grid.Column="0"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding OrderTotal, StringFormat='{0:C2}'}"
+                       Grid.Column="1"
+                       HorizontalTextAlignment="End" />
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -4,14 +4,17 @@
                     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
                     x:Class="SpectrumTest.Styles.DefaultTheme">
 
-    <Color x:Key="LightPageBackgroundColor">#CFD8DC</Color>
+    <Color x:Key="LightPageBackgroundColor">#F2F2F2</Color>
     <Color x:Key="DarkPageBackgroundColor">#545454</Color>
 
-    <Color x:Key="LightBackground">#FAF9F8</Color>
-    <Color x:Key="DarkBackground">Black</Color>
+    <Color x:Key="LightBackground">#F2F2F2</Color>
+    <Color x:Key="DarkBackground">#545454</Color>
     
     <Color x:Key="LabelText">#1F1F1F</Color>
     <Color x:Key="LabelTextDark">White</Color>
+
+    <Color x:Key="BoxViewBackground">Gray</Color>
+    <Color x:Key="BoxViewBackgroundDark">LightGray</Color>
     
     <Color x:Key="LightPrimaryButtonBackgroundColor">#9CBC5C</Color>
     <Color x:Key="LightPrimaryButtonTextColor">White</Color>
@@ -32,9 +35,12 @@
         <Setter Property="TextColor"
                 Value="{AppThemeBinding Light={StaticResource LabelText}, Dark={StaticResource LabelTextDark}}" />
     </Style>
-    
-    <Thickness x:Key="DataEntryMargin">40,0,40,10</Thickness>
 
+    <Style TargetType="BoxView">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource BoxViewBackground}, Dark={StaticResource BoxViewBackgroundDark}}" />
+    </Style>
+    
     <Style x:Key="InvalidEntryStyle" TargetType="Entry">
         <Setter Property="TextColor" Value="Red" />
         <Setter Property="FontAttributes" Value="Italic" />
@@ -52,15 +58,6 @@
                 Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonBackgroundColor}, Dark={StaticResource DarkPrimaryButtonBackgroundColor}}" />
         <Setter Property="TextColor"
                 Value="{AppThemeBinding Light={StaticResource LightPrimaryButtonTextColor}, Dark={StaticResource DarkPrimaryButtonTextColor}}" />
-        <Setter Property="CornerRadius" Value="20"/>
-    </Style>
-
-    <Style x:Key="DisabledButton"
-           TargetType="Button">
-        <Setter Property="BackgroundColor"
-                Value="{AppThemeBinding Light={StaticResource LightDisabledButtonBackgroundColor}, Dark={StaticResource DarkDisabledButtonBackgroundColor}}" />
-        <Setter Property="TextColor"
-                Value="{AppThemeBinding Light={StaticResource LightDisabledButtonTextColor}, Dark={StaticResource DarkDisabledButtonTextColor}}" />
         <Setter Property="CornerRadius" Value="20"/>
     </Style>
 
