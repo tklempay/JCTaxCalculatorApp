@@ -101,7 +101,13 @@
                            ReturnCommand="{Binding UpdateZipcodeCommand}"
                            ClearButtonVisibility="WhileEditing"
                            VerticalTextAlignment="Center"
-                           Grid.Column="0" />
+                           MaxLength="5"
+                           Grid.Column="0">
+                        <Entry.Behaviors>
+                            <xct:MaxLengthReachedBehavior Command="{Binding UpdateZipcodeCommand}"
+                                                          ShouldDismissKeyboardAutomatically="True" />
+                        </Entry.Behaviors>
+                    </Entry>
                     <Label Text="{Binding TaxRate, StringFormat='tax rate: {0:P2}'}"  
                            Grid.Column="1" 
                            FontSize="Medium"
