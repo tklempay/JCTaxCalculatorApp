@@ -22,6 +22,7 @@ namespace JC.Common.Tests
             var services = new ServiceCollection();
             services.AddSingleton<ITaxCalculator, TaxJarTaxCalculator>();
             services.AddSingleton<ITaxService, TaxService>();
+            services.AddSingleton<IHttpClientService, HttpClientService>();
             ServiceProvider = services.BuildServiceProvider();
 
             Item = new()
@@ -115,7 +116,6 @@ namespace JC.Common.Tests
             var singleItemNewHartfordTaxRate = Math.Round(Item.Price * .0875M, 2);
             Assert.AreEqual(singleItemNewHartfordTaxRate, taxTotal);
             Console.WriteLine($"TaxTotal: {taxTotal}");
-
         }
     }
 }

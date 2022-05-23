@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Specialized;
 using System.Net.Http.Json;
+using System.Collections.Generic;
 
 namespace JC.Common.Services
 {
@@ -17,11 +18,12 @@ namespace JC.Common.Services
 
         private string _baseAPIURL = "https://api.taxjar.com/v2/rates/";
 
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private readonly IHttpClientService _httpClientService;
 
-        public TaxJarTaxCalculator()
+        public TaxJarTaxCalculator(IHttpClientService httpClientService)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+            _httpClientService = httpClientService;
+            _httpClientService.GetClient().DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
         /// <summary>
@@ -31,7 +33,6 @@ namespace JC.Common.Services
         /// <returns>tax rate in decimal format, -1 if an error occurs</returns>
         public async Task<decimal> GetTaxRateAsync(Location location)
         {
-            // todo: add a separate HttpService
             decimal taxRate = -1;
             try
             {
@@ -46,22 +47,18 @@ namespace JC.Common.Services
                 }
 
                 // build up the query string params (if there are any)
-                NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-                if (string.IsNullOrWhiteSpace(location.Country) == false)
+                Dictionary<string, string> queryParams = new Dictionary<string, string>
                 {
-                    queryString.Add("country", location.Country);
-                }
-                if (string.IsNullOrWhiteSpace(location.City) == false)
-                {
-                    queryString.Add("city", location.City);
-                }
-                
+                    { "country", location.Country },
+                    { "city", location.City },
+                };
+
                 // build up the URL to call the tax API
                 var apiURL = new UriBuilder($"{_baseAPIURL}{location.ZipCode}")
                 {
-                    Query = queryString.ToString(),
+                    Query = _httpClientService.BuildQueryString(queryParams).ToString(),
                 };
-                var results = await _httpClient.GetFromJsonAsync<TaxRate>(apiURL.Uri);
+                var results = await _httpClientService.GetClient().GetFromJsonAsync<TaxRate>(apiURL.Uri);
                 taxRate = decimal.Parse(results.Rate.CombinedRate);
             }
             catch(Exception ex)

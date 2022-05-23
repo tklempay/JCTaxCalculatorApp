@@ -24,6 +24,7 @@ namespace JCTaxCalculatorApp
             // Services
             services.AddSingleton<ITaxCalculator, TaxJarTaxCalculator>();
             services.AddSingleton<ITaxService, TaxService>();
+            services.AddSingleton<IHttpClientService, HttpClientService>();
             // ViewModels
             services.AddTransient<OrderViewModel>();
 

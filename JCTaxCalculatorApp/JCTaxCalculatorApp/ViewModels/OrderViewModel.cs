@@ -18,8 +18,6 @@ namespace JCTaxCalculatorApp.ViewModels
             set
             {
                 SetProperty(ref _taxRate, value);
-                // todo: 
-                // OnPropertyChanged(nameof(TotalTax));
             }
         }
 
