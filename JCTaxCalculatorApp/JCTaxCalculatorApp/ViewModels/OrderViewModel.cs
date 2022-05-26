@@ -15,10 +15,7 @@ namespace JCTaxCalculatorApp.ViewModels
         public decimal TaxRate
         {
             get => _taxRate;
-            set
-            {
-                SetProperty(ref _taxRate, value);
-            }
+            set => SetProperty(ref _taxRate, value);
         }
 
         private decimal _totalTax;
